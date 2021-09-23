@@ -1,5 +1,5 @@
 # Mn Stock Broker Application
-## Micronaut 3.0.1 Documentation
+## Micronaut 2.5.7 Documentation
 
 - [User Guide](https://docs.micronaut.io/2.5.7/guide/index.html)
 - [API Reference](https://docs.micronaut.io/2.5.7/api/index.html)
