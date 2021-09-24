@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.danielprinz.udemy</groupId>
+  <groupId>com.learning.udemy</groupId>
   <artifactId>mn-stock-broker</artifactId>
   <version>1.0.0</version>
   <packaging>${packaging}</packaging>
@@ -161,7 +161,7 @@
           </annotationProcessorPaths>
           <compilerArgs>
             <arg>-J-Dmicronaut.openapi.views.spec=redoc.enabled=true,rapidoc.enabled=true,swagger-ui.enabled=true,swagger-ui.theme=flattop</arg>
-            <arg>-Amicronaut.processing.group=com.danielprinz.udemy</arg>
+            <arg>-Amicronaut.processing.group=com.learning.udemy</arg>
             <arg>-Amicronaut.processing.module=mn-stock-broker</arg>
           </compilerArgs>
         </configuration>
