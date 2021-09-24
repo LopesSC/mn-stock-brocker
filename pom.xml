@@ -159,6 +159,7 @@
               <version>${micronaut.security.version}</version>
             </path>
           </annotationProcessorPaths>
+          <fork>true</fork>
           <compilerArgs>
             <arg>-J-Dmicronaut.openapi.views.spec=redoc.enabled=true,rapidoc.enabled=true,swagger-ui.enabled=true,swagger-ui.theme=flattop</arg>
             <arg>-Amicronaut.processing.group=com.learning.udemy</arg>
