@@ -64,5 +64,8 @@ Compiles source code of the project
 ### mvn test-compile
 Compiles the test source code
 
+### mvn install
+Compiles, tests & packages the Java project and install/copy your built .jar/.war file into your local Maven repository
+
 ### mvn test
 Runs tests for the project
