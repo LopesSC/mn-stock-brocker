@@ -29,4 +29,16 @@ hello:
     de: "Hallo"
     en: "Hello"
 
+# JSON Settings
+jackson:
+#  property-name-strategy: SNAKE_CASE
+  serialization:
+    writeDatesAsTimestamps: false
+    writeDatesWithZoneId: true
+    writeDateTimestampsAsNanoseconds: false
+  deserialization:
+    failOnUnknownProperties: false
+  generator:
+    writeNumbersAsStrings: false
+    writeBigDecimalAsPlain: false
 

@@ -1,19 +1,24 @@
 package com.learning.udemy;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.http.client.netty.DefaultHttpClient;
 import io.micronaut.runtime.EmbeddedApplication;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MicronautTest
 class HelloWorldControllerTest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(HelloWorldControllerTest.class);
 
     @Inject
     EmbeddedApplication<?> application;
@@ -46,5 +51,10 @@ class HelloWorldControllerTest {
         assertEquals("Hello", result);
     }
 
+    @Test
+    void returnsGreetingAsJson() {
+        final ObjectNode result = client.toBlocking().retrieve("/hello/json", ObjectNode.class);
+        assertTrue(result.toString().contains("{\"myText\":\"Hello World\",\"id\":1,\"timeUTC\":"));
+    }
 
 }

@@ -19,14 +19,19 @@ public class HelloWorldController {
         return service.sayHi();
     }
 
-    @Get("de")
+    @Get("/de")
     public String greetingInGerman() {
         return config.getDe();
     }
 
-    @Get("en")
+    @Get("/en")
     public String greetingInEnglish() {
         return config.getEn();
+    }
+
+    @Get("/json")
+    public Greeting json() {
+        return new Greeting();
     }
 
 }
