@@ -49,7 +49,7 @@ The redoc endpoint is: ``/redoc``
 [Click here for Redoc documentation](https://redoc.ly/docs)
 
 ## Useful Maven commands
-Generally when we running any of the commands below, we add the mvn clean step so that the target folder generated 
+Generally when we run any of the commands below, we add the mvn clean step so that the target folder generated 
 from the previous build is removed before running a newer build. This is how the command would look on integrating 
 the clean step with install phase: mvn clean install
 
