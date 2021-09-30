@@ -6,6 +6,7 @@ import io.micronaut.http.client.netty.DefaultHttpClient;
 import io.micronaut.runtime.EmbeddedApplication;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
+import lombok.val;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -29,26 +30,25 @@ class HelloWorldControllerTest {
 
     @Test
     void testHelloResponse() {
-        final String result = client.toBlocking().retrieve("/hello");
+        val result = client.toBlocking().retrieve("/hello");
         assertEquals("Hello from service", result);
     }
 
     @Test
     void returnsGermanGreeting() {
-        final String result = client.toBlocking().retrieve("/hello/de");
+        val result = client.toBlocking().retrieve("/hello/de");
         assertEquals("Hallo", result);
     }
 
     @Test
     void returnsEnglishGreeting() {
-        final String result = client.toBlocking().retrieve("/hello/en");
+        val result = client.toBlocking().retrieve("/hello/en");
         assertEquals("Hello", result);
     }
 
     @Test
     void returnsGreetingAsJson() {
-        final ObjectNode result = client.toBlocking().retrieve("/hello/json", ObjectNode.class);
+        val result = client.toBlocking().retrieve("/hello/json", ObjectNode.class);
         assertTrue(result.toString().contains("{\"myText\":\"Hello World\",\"id\":1,\"timeUTC\":"));
     }
-
 }

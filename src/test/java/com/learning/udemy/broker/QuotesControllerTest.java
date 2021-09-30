@@ -11,12 +11,12 @@ import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.http.client.netty.DefaultHttpClient;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static io.micronaut.http.HttpRequest.GET;
@@ -39,21 +39,20 @@ public class QuotesControllerTest {
 
     @Test
     void returnsQuotePerSymbol() {
-        final Quote appl = initRandomQuote("APPL");
+        val appl = initRandomQuote("APPL");
         store.update(appl);
 
-        final Quote amzn = initRandomQuote("AMZN");
+        val amzn = initRandomQuote("AMZN");
         store.update(amzn);
 
-        final Quote applResult = client.toBlocking().retrieve(GET("/quotes/APPL"), Quote.class);
+        val applResult = client.toBlocking().retrieve(GET("/quotes/APPL"), Quote.class);
         LOG.debug("Result: {}", applResult);
         assertThat(appl).usingRecursiveComparison().isEqualTo(applResult);
 
 
-        final Quote amznResult = client.toBlocking().retrieve(GET("/quotes/AMZN"), Quote.class);
+        val amznResult = client.toBlocking().retrieve(GET("/quotes/AMZN"), Quote.class);
         LOG.debug("Result: {}", amznResult);
         assertThat(amzn).usingRecursiveComparison().isEqualTo(amznResult);
-
     }
 
     @Test
@@ -68,14 +67,13 @@ public class QuotesControllerTest {
 
             assertEquals(HttpStatus.NOT_FOUND, e.getResponse().getStatus());
             LOG.debug("Body: {}", e.getResponse().getBody(CustomError.class));
-            final Optional<CustomError> customError = e.getResponse().getBody(CustomError.class);
+            val customError = e.getResponse().getBody(CustomError.class);
 
             assertTrue(customError.isPresent());
             assertEquals(404, customError.get().getStatus());
             assertEquals("NOT_FOUND", customError.get().getError());
             assertEquals("Quote for symbol not found", customError.get().getMessage());
             assertEquals("/quotes/UNSUPPORTED", customError.get().getPath());
-
         }
     }
 
@@ -92,6 +90,4 @@ public class QuotesControllerTest {
 
         return BigDecimal.valueOf(ThreadLocalRandom.current().nextDouble(1, 100));
     }
-
-
 }

@@ -26,8 +26,5 @@ public class MarketsControllerTest {
         assertThat(result)
                 .extracting(entry -> entry.get("value"))
                 .containsExactlyInAnyOrder("APPL", "AMZN", "FB", "GOOGLE", "MCSFT", "NFLX", "TSLA");
-
     }
-
-
 }
