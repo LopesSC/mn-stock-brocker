@@ -22,7 +22,6 @@ class HelloWorldControllerTest {
     @Client("/")
     DefaultHttpClient client;
 
-
     @Test
     void testItWorks() {
         Assertions.assertTrue(application.isRunning());
