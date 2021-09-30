@@ -12,6 +12,7 @@ import io.micronaut.http.client.netty.DefaultHttpClient;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import lombok.val;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,6 @@ import java.math.BigDecimal;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static io.micronaut.http.HttpRequest.GET;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @MicronautTest
@@ -45,14 +43,16 @@ public class QuotesControllerTest {
         val amzn = initRandomQuote("AMZN");
         store.update(amzn);
 
-        val applResult = client.toBlocking().retrieve(GET("/quotes/APPL"), Quote.class);
-        LOG.debug("Result: {}", applResult);
-        assertThat(appl).usingRecursiveComparison().isEqualTo(applResult);
+        SoftAssertions.assertSoftly(softly -> {
+            val applResult = client.toBlocking().retrieve(GET("/quotes/APPL"), Quote.class);
+            LOG.debug("Result: {}", applResult);
+            softly.assertThat(appl).usingRecursiveComparison().isEqualTo(applResult);
 
 
-        val amznResult = client.toBlocking().retrieve(GET("/quotes/AMZN"), Quote.class);
-        LOG.debug("Result: {}", amznResult);
-        assertThat(amzn).usingRecursiveComparison().isEqualTo(amznResult);
+            val amznResult = client.toBlocking().retrieve(GET("/quotes/AMZN"), Quote.class);
+            LOG.debug("Result: {}", amznResult);
+            softly.assertThat(amzn).usingRecursiveComparison().isEqualTo(amznResult);
+        });
     }
 
     @Test
@@ -65,15 +65,18 @@ public class QuotesControllerTest {
 
         } catch (HttpClientResponseException e) {
 
-            assertEquals(HttpStatus.NOT_FOUND, e.getResponse().getStatus());
-            LOG.debug("Body: {}", e.getResponse().getBody(CustomError.class));
-            val customError = e.getResponse().getBody(CustomError.class);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat((CharSequence) e.getResponse().getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
 
-            assertTrue(customError.isPresent());
-            assertEquals(404, customError.get().getStatus());
-            assertEquals("NOT_FOUND", customError.get().getError());
-            assertEquals("Quote for symbol not found", customError.get().getMessage());
-            assertEquals("/quotes/UNSUPPORTED", customError.get().getPath());
+                LOG.debug("Body: {}", e.getResponse().getBody(CustomError.class));
+                val customError = e.getResponse().getBody(CustomError.class);
+
+                softly.assertThat(customError).isPresent();
+                softly.assertThat(customError.get().getStatus()).isEqualTo(404);
+                softly.assertThat(customError.get().getError()).isEqualTo("NOT_FOUND");
+                softly.assertThat(customError.get().getMessage()).isEqualTo("Quote for symbol not found");
+                softly.assertThat(customError.get().getPath()).isEqualTo("/quotes/UNSUPPORTED");
+            });
         }
     }
 
