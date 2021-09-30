@@ -9,6 +9,7 @@ import io.micronaut.rxjava3.http.client.Rx3HttpClient;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import lombok.val;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -16,8 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.micronaut.http.HttpRequest.*;
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @MicronautTest
 public class WatchListControllerReactiveTest {
@@ -34,8 +34,11 @@ public class WatchListControllerReactiveTest {
     @Test
     void returnsEmptyWatchListForAccount() {
         val result = client.retrieve(GET("/"), WatchList.class).singleOrError();
-        assertTrue(result.blockingGet().getSymbols().isEmpty());
-        assertTrue(store.getWatchList(TEST_ACCOUNT_ID).getSymbols().isEmpty());
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(result.blockingGet().getSymbols()).isEmpty();
+            softly.assertThat(store.getWatchList(TEST_ACCOUNT_ID).getSymbols()).isEmpty();
+        });
     }
 
     @Test
@@ -48,8 +51,11 @@ public class WatchListControllerReactiveTest {
         store.updateWatchlist(TEST_ACCOUNT_ID, watchList);
 
         val result = client.retrieve(GET("/"), WatchList.class).blockingFirst();
-        assertEquals(4, result.getSymbols().size());
-        assertEquals(4, store.getWatchList(TEST_ACCOUNT_ID).getSymbols().size());
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(result.getSymbols().size()).isEqualTo(4);
+            softly.assertThat(store.getWatchList(TEST_ACCOUNT_ID).getSymbols().size()).isEqualTo(4);
+        });
     }
 
     @Test
@@ -62,8 +68,11 @@ public class WatchListControllerReactiveTest {
         store.updateWatchlist(TEST_ACCOUNT_ID, watchList);
 
         val result = client.retrieve(GET("/single"), WatchList.class).blockingFirst();
-        assertEquals(4, result.getSymbols().size());
-        assertEquals(4, store.getWatchList(TEST_ACCOUNT_ID).getSymbols().size());
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(result.getSymbols().size()).isEqualTo(4);
+            softly.assertThat(store.getWatchList(TEST_ACCOUNT_ID).getSymbols().size()).isEqualTo(4);
+        });
     }
 
 
@@ -77,8 +86,10 @@ public class WatchListControllerReactiveTest {
 
         val response = client.exchange(PUT("/", watchList)).blockingFirst();
 
-        assertEquals(HttpStatus.OK, response.getStatus());
-        assertEquals(watchList, store.getWatchList(TEST_ACCOUNT_ID));
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat((CharSequence) response.getStatus()).isEqualTo(HttpStatus.OK);
+            softly.assertThat(store.getWatchList(TEST_ACCOUNT_ID)).isEqualTo(watchList);
+        });
     }
 
     @Test
@@ -93,7 +104,9 @@ public class WatchListControllerReactiveTest {
 
         val response = client.exchange(DELETE("/" + TEST_ACCOUNT_ID)).blockingFirst();
 
-        assertEquals(HttpStatus.OK, response.getStatus());
-        assertTrue(store.getWatchList(TEST_ACCOUNT_ID).getSymbols().isEmpty());
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat((CharSequence) response.getStatus()).isEqualTo(HttpStatus.OK);
+            softly.assertThat(store.getWatchList(TEST_ACCOUNT_ID).getSymbols()).isEmpty();
+        });
     }
 }
