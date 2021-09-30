@@ -1,9 +1,8 @@
 package com.learning.udemy.broker.store;
 
 import com.learning.udemy.broker.model.WatchList;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
-import java.nio.file.WatchService;
 import java.util.HashMap;
 import java.util.UUID;
 

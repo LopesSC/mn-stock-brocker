@@ -3,8 +3,9 @@ package com.learning.udemy.broker.store;
 
 import com.learning.udemy.broker.model.Quote;
 import com.learning.udemy.broker.model.Symbol;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;

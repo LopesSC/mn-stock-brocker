@@ -9,11 +9,11 @@ import io.micronaut.http.client.annotation.Client;
 import io.micronaut.http.client.netty.DefaultHttpClient;
 import io.micronaut.runtime.EmbeddedApplication;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
