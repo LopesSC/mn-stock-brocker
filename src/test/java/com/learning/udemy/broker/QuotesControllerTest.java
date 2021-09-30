@@ -9,13 +9,11 @@ import io.micronaut.http.HttpStatus;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.http.client.netty.DefaultHttpClient;
-import io.micronaut.runtime.EmbeddedApplication;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -31,10 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class QuotesControllerTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(QuotesControllerTest.class);
-
-
-    @Inject
-    EmbeddedApplication<?> application;
 
     @Inject
     @Client("/")
@@ -53,12 +47,12 @@ public class QuotesControllerTest {
 
         final Quote applResult = client.toBlocking().retrieve(GET("/quotes/APPL"), Quote.class);
         LOG.debug("Result: {}", applResult);
-        assertThat(appl).isEqualToComparingFieldByField(applResult);
+        assertThat(appl).usingRecursiveComparison().isEqualTo(applResult);
 
 
         final Quote amznResult = client.toBlocking().retrieve(GET("/quotes/AMZN"), Quote.class);
         LOG.debug("Result: {}", amznResult);
-        assertThat(amzn).isEqualToComparingFieldByField(amznResult);
+        assertThat(amzn).usingRecursiveComparison().isEqualTo(amznResult);
 
     }
 

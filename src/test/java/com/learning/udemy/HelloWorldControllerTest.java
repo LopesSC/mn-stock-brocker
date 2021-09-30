@@ -8,16 +8,12 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MicronautTest
 class HelloWorldControllerTest {
-
-    private static final Logger LOG = LoggerFactory.getLogger(HelloWorldControllerTest.class);
 
     @Inject
     EmbeddedApplication<?> application;

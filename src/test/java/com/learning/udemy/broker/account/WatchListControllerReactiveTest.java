@@ -3,8 +3,6 @@ package com.learning.udemy.broker.account;
 import com.learning.udemy.broker.model.Symbol;
 import com.learning.udemy.broker.model.WatchList;
 import com.learning.udemy.broker.store.InMemoryAccountStore;
-import io.micronaut.core.io.buffer.ByteBuffer;
-import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.runtime.EmbeddedApplication;
@@ -14,8 +12,6 @@ import io.reactivex.rxjava3.core.Single;
 import jakarta.inject.Inject;
 import lombok.val;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,19 +19,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.micronaut.http.HttpRequest.*;
-import static io.micronaut.http.HttpRequest.GET;
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @MicronautTest
 public class WatchListControllerReactiveTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WatchListControllerReactiveTest.class);
     private static  final UUID TEST_ACCOUNT_ID = WatchListControllerReactive.ACCOUNT_ID;
-
-
-    @Inject
-    EmbeddedApplication<?> application;
 
     @Inject
     @Client("/account/watchlist-reactive")
@@ -88,7 +78,7 @@ public class WatchListControllerReactiveTest {
 
         WatchList watchList = new WatchList(symbols);
 
-        final val response = client.exchange(PUT("/", watchList)).blockingFirst();
+        val response = client.exchange(PUT("/", watchList)).blockingFirst();
 
         assertEquals(HttpStatus.OK, response.getStatus());
         assertEquals(watchList, store.getWatchList(TEST_ACCOUNT_ID));
@@ -104,7 +94,7 @@ public class WatchListControllerReactiveTest {
         store.updateWatchlist(TEST_ACCOUNT_ID, watchList);
         assertFalse(store.getWatchList(TEST_ACCOUNT_ID).getSymbols().isEmpty());
 
-        final val response = client.exchange(DELETE("/" + TEST_ACCOUNT_ID)).blockingFirst();
+        val response = client.exchange(DELETE("/" + TEST_ACCOUNT_ID)).blockingFirst();
 
         assertEquals(HttpStatus.OK, response.getStatus());
         assertTrue(store.getWatchList(TEST_ACCOUNT_ID).getSymbols().isEmpty());
