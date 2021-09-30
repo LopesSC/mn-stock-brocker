@@ -18,8 +18,6 @@ import java.util.stream.Stream;
 
 import static io.micronaut.http.HttpRequest.DELETE;
 import static io.micronaut.http.HttpRequest.PUT;
-import static org.junit.jupiter.api.Assertions.*;
-
 
 @MicronautTest
 public class WatchListControllerTest {
